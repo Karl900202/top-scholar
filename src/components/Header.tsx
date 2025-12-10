@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SignIn } from "@stackframe/stack";
 
 export default function Header() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function Header() {
               ))}
             </div>
 
-            {/* Login Button */}
+            {/* User Icon Button */}
             <button
               onClick={() => setIsLoginModalOpen(true)}
               className="flex items-center justify-center w-10 h-10 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors"
@@ -57,6 +58,46 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      {/* SignIn Modal */}
+      {isLoginModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsLoginModalOpen(false);
+            }
+          }}
+        >
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-gray-900">로그인</h2>
+              <button
+                onClick={() => setIsLoginModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="닫기"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              <SignIn />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

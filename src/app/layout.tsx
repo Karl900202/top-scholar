@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,19 +46,42 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'dark';
+                  const root = document.documentElement;
+                  if (theme === 'dark') {
+                    root.classList.add('dark');
+                  } else {
+                    root.classList.remove('dark');
+                  }
+                } catch (e) {
+                  console.error('Theme script error:', e);
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full min-h-screen bg-black`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full min-h-screen`}
       >
-        <div className="flex flex-col min-h-screen items-center">
-          <div className="w-full max-w-md mx-auto bg-black min-h-screen pb-16">
-            <Header />
-            <main className="flex-1 w-full">
-              {children}
-            </main>
-            <BottomNav />
+        <ThemeProvider>
+          <div className="flex flex-col min-h-screen items-center">
+            <div className="w-full max-w-md mx-auto min-h-screen pb-16">
+              <Header />
+              <main className="flex-1 w-full">
+                {children}
+              </main>
+              <BottomNav />
+            </div>
           </div>
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );

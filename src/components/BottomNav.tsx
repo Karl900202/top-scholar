@@ -60,7 +60,7 @@ export default function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md z-50 bg-black border-t border-gray-800 safe-area-bottom">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md z-50 bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800 safe-area-bottom">
       <div className="w-full">
         <div className="flex items-center justify-between h-16 px-1">
           {navItems.map((item) => {
@@ -72,13 +72,19 @@ export default function BottomNav() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex flex-col items-center justify-center flex-1 gap-0.5 transition-all duration-200 min-w-0 rounded-lg`}
+                className="flex flex-col items-center justify-center flex-1 gap-0.5 transition-all duration-200 min-w-0 rounded-lg"
               >
-                <div className={`flex-shrink-0 ${isActive ? "text-amber-500" : "text-white"}`}>
+                <div className={`flex-shrink-0 ${
+                  isActive 
+                    ? "text-amber-500" 
+                    : "text-gray-600 dark:text-white"
+                }`}>
                   {item.icon}
                 </div>
                 <span className={`text-[10px] font-medium truncate w-full text-center ${
-                  isActive ? "text-white" : "text-gray-400"
+                  isActive 
+                    ? "text-gray-900 dark:text-white"
+                    : "text-gray-500 dark:text-gray-400"
                 }`}>
                   {item.name}
                 </span>

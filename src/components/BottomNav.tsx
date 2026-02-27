@@ -83,7 +83,7 @@ export default function BottomNav() {
                 </div>
                 <span className={`text-[10px] font-medium truncate w-full text-center ${
                   isActive 
-                    ? "text-gray-900 dark:text-white"
+                    ? "text-amber-500"
                     : "text-gray-500 dark:text-gray-400"
                 }`}>
                   {item.name}

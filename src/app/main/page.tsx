@@ -15,9 +15,10 @@ export default function MainPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white">
+    <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white pt-24">
+
       {/* 공모전 이미지 스와이프 영역 */}
-      <div className="w-full py-4">
+      <div className="w-full">
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={12}
@@ -30,11 +31,11 @@ export default function MainPage() {
           pagination={{
             clickable: true,
           }}
-          className="w-full"
+          className="w-full !pt-0"
         >
           {images.map((image, index) => (
-            <SwiperSlide key={index} className="!w-[90vw]">
-              <div className="relative w-full h-[50vh] border-0 rounded-xl overflow-hidden">
+            <SwiperSlide key={index} className="!w-[100vw]">
+              <div className="relative w-full h-[50vh] border-0 overflow-hidden">
                 <Image
                   src={image}
                   alt={`공모전 ${index + 1}`}

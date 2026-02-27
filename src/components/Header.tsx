@@ -1,12 +1,20 @@
 "use client";
 
 import { useTheme } from "@/contexts/ThemeContext";
+import { usePathname } from "next/navigation";
+import MainTopBar from "@/app/main/_components/MainTopBar";
 
 export default function Header() {
   const { toggleTheme } = useTheme();
+  const pathname = usePathname();
+
+  // /main 이하에서는 메인 전용 상단 바 사용
+  if (pathname.startsWith("/main")) {
+    return <MainTopBar />;
+  }
 
   return (
-    <header className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800 sticky top-0 z-40 safe-area-top">
+    <header className="bg-white dark:bg-black sticky top-0 z-40 safe-area-top">
       <div className="w-full p-1">
         <div className="flex items-center justify-between h-14">
           {/* 브랜드명과 슬로건 */}

@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/pagination";
 
 export default function MainPage() {
   // public/images 폴더의 이미지 사용
@@ -14,13 +15,19 @@ export default function MainPage() {
     "/images/별별마포.jpg",
   ];
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleSlideChange = (swiper: SwiperType) => {
+    setCurrentIndex(swiper.realIndex);
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white pt-24">
 
       {/* 공모전 이미지 스와이프 영역 */}
-      <div className="w-full">
+      <div className="w-full overflow-hidden relative">
         <Swiper
-          modules={[Autoplay, Pagination]}
+          modules={[Autoplay]}
           spaceBetween={12}
           slidesPerView="auto"
           centeredSlides={true}
@@ -28,13 +35,11 @@ export default function MainPage() {
             delay: 5000,
             disableOnInteraction: false,
           }}
-          pagination={{
-            clickable: true,
-          }}
+          onSlideChange={handleSlideChange}
           className="w-full !pt-0"
         >
           {images.map((image, index) => (
-            <SwiperSlide key={index} className="!w-[100vw]">
+            <SwiperSlide key={index} className="!w-full">
               <div className="relative w-full h-[50vh] border-0 overflow-hidden">
                 <Image
                   src={image}
@@ -42,11 +47,23 @@ export default function MainPage() {
                   fill
                   className="object-fill"
                   priority={index === 0}
+                  sizes="100vw"
                 />
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
+        
+        {/* 페이지 인덱스 표시 */}
+        <div className="absolute bottom-4 right-4 z-10">
+          <div className="bg-black/60 backdrop-blur-sm rounded-full px-4.5 py-1.5">
+            <span className="text-white text-sm font-medium flex items-center gap-1.5">
+              <span>{currentIndex + 1}</span>
+              <span>/</span>
+              <span>{images.length}</span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

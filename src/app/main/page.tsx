@@ -1,69 +1,78 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useEffect, useRef, type ReactNode } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
-import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
-export default function MainPage() {
-  // public/images 폴더의 이미지 사용
-  const images = [
-    "/images/서울_공공디자인_공모전.jpg",
-    "/images/순환경제_아이디어_공모전.jpg",
-    "/images/별별마포.jpg",
-  ];
+import MainSwiper from "@/app/main/_components/MainSwiper";
+import { MAIN_TABS } from "@/app/main/_components/MainTopBar";
+import { useMainTab, type MainTab } from "@/contexts/MainTabContext";
+import BestTab from "@/app/main/_components/BestTab";
+import NewTab from "@/app/main/_components/NewTab";
+import RecommendTab from "@/app/main/_components/RecommendTab";
+import PopularTab from "@/app/main/_components/PopularTab";
+import RankTab from "@/app/main/_components/RankTab";
+import ClosingSoonTab from "@/app/main/_components/ClosingSoonTab";
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+const TAB_COMPONENTS: Record<MainTab, ReactNode> = {
+  BEST: <BestTab />,
+  NEW: <NewTab />,
+  추천: <RecommendTab />,
+  인기: <PopularTab />,
+  랭킹: <RankTab />,
+  마감임박: <ClosingSoonTab />,
+};
+
+export default function MainPage() {
+  const { activeTab, setActiveTab } = useMainTab();
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  // 탭 변경 시 해당 인덱스로 스와이프
+  useEffect(() => {
+    if (!swiperRef.current) return;
+    const index = MAIN_TABS.indexOf(activeTab);
+    if (index >= 0 && index !== swiperRef.current.realIndex) {
+      swiperRef.current.slideTo(index);
+    }
+  }, [activeTab]);
+
+  const handleSwiperInit = (swiper: SwiperType) => {
+    swiperRef.current = swiper;
+    const index = MAIN_TABS.indexOf(activeTab);
+    if (index >= 0) {
+      swiper.slideTo(index, 0);
+    }
+  };
 
   const handleSlideChange = (swiper: SwiperType) => {
-    setCurrentIndex(swiper.realIndex);
+    const tab = MAIN_TABS[swiper.realIndex];
+    if (tab) {
+      setActiveTab(tab);
+    }
   };
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white pt-24">
-
-      {/* 공모전 이미지 스와이프 영역 */}
-      <div className="w-full overflow-hidden relative">
+      
+      <div className="w-full overflow-hidden">
         <Swiper
-          modules={[Autoplay]}
-          spaceBetween={12}
-          slidesPerView="auto"
-          centeredSlides={true}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-          }}
+          onSwiper={handleSwiperInit}
           onSlideChange={handleSlideChange}
-          className="w-full !pt-0"
+          spaceBetween={0}
+          slidesPerView={1}
+          resistanceRatio={0.85}
+          className="w-full"
         >
-          {images.map((image, index) => (
-            <SwiperSlide key={index} className="!w-full">
-              <div className="relative w-full h-[50vh] border-0 overflow-hidden">
-                <Image
-                  src={image}
-                  alt={`공모전 ${index + 1}`}
-                  fill
-                  className="object-fill"
-                  priority={index === 0}
-                  sizes="100vw"
-                />
+          {MAIN_TABS.map((tab) => (
+            <SwiperSlide key={tab} className="!w-full">
+              {(tab === "추천" || tab === "인기") && <MainSwiper />}
+              <div className="min-h-[40vh]">
+                {TAB_COMPONENTS[tab]}
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
-        
-        {/* 페이지 인덱스 표시 */}
-        <div className="absolute bottom-4 right-4 z-10">
-          <div className="bg-black/60 backdrop-blur-sm rounded-full px-4.5 py-1.5">
-            <span className="text-white text-sm font-medium flex items-center gap-1.5">
-              <span>{currentIndex + 1}</span>
-              <span>/</span>
-              <span>{images.length}</span>
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   );

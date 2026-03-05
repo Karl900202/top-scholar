@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import HeaderContent from "@/components/HeaderContent";
+import { useMainTab, type MainTab } from "@/contexts/MainTabContext";
+import { useEffect, useRef, useState } from "react";
 
 // 스크롤 방향에 따라 상단 헤더 표시 여부를 제어하는 훅
 function useScrollHeaderVisibility() {
@@ -44,10 +45,17 @@ function useScrollHeaderVisibility() {
   return showHeader;
 }
 
-const TABS = ["BEST", "NEW", "추천", "인기", "랭킹", "마감임박"];
+export const MAIN_TABS: MainTab[] = [
+  "BEST",
+  "NEW",
+  "추천",
+  "인기",
+  "랭킹",
+  "마감임박",
+];
 
 export default function MainTopBar() {
-  const [activeTab, setActiveTab] = useState("추천");
+  const { activeTab, setActiveTab } = useMainTab();
   const showHeader = useScrollHeaderVisibility();
 
   return (
@@ -82,7 +90,7 @@ export default function MainTopBar() {
           className="flex pt-0.5 gap-5 overflow-x-auto scrollbar-hide"
           style={{ WebkitOverflowScrolling: "touch" }}
         >
-          {TABS.map((tab) => {
+          {MAIN_TABS.map((tab) => {
             const isActive = activeTab === tab;
             let textColor = "";
 

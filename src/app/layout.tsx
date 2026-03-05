@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { MainTabProvider } from "@/contexts/MainTabContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,15 +73,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-full min-h-screen`}
       >
         <ThemeProvider>
-          <div className="flex flex-col min-h-screen items-center">
-            <div className="w-full max-w-md mx-auto min-h-screen pb-16">
-              <Header />
-              <main className="flex-1 w-full">
-                {children}
-              </main>
-              <BottomNav />
+          <MainTabProvider>
+            <div className="flex flex-col min-h-screen items-center">
+              <div className="w-full max-w-md mx-auto min-h-screen pb-16">
+                <Header />
+                <main className="flex-1 w-full">
+                  {children}
+                </main>
+                <BottomNav />
+              </div>
             </div>
-          </div>
+          </MainTabProvider>
         </ThemeProvider>
       </body>
     </html>

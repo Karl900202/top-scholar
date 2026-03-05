@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import HeaderContent from "@/components/HeaderContent";
-import { useMainTab, type MainTab } from "@/contexts/MainTabContext";
+import { useMainTabStore, MAIN_TABS } from "@/stores/useMainTabStore";
 import { useEffect, useRef, useState } from "react";
 
 // 스크롤 방향에 따라 상단 헤더 표시 여부를 제어하는 훅
@@ -45,17 +45,9 @@ function useScrollHeaderVisibility() {
   return showHeader;
 }
 
-export const MAIN_TABS: MainTab[] = [
-  "BEST",
-  "NEW",
-  "추천",
-  "인기",
-  "랭킹",
-  "마감임박",
-];
-
 export default function MainTopBar() {
-  const { activeTab, setActiveTab } = useMainTab();
+  const activeTab = useMainTabStore((s) => s.activeTab);
+  const setActiveTab = useMainTabStore((s) => s.setActiveTab);
   const showHeader = useScrollHeaderVisibility();
 
   return (

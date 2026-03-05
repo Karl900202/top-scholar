@@ -1,10 +1,10 @@
 "use client";
 
-import { useTheme } from "@/contexts/ThemeContext";
+import { useThemeStore } from "@/stores/useThemeStore";
 import LoginDialog from "@/components/LoginDialog";
 
 export default function HeaderContent() {
-  const { toggleTheme } = useTheme();
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
 
   return (
     <div className="w-full p-1">

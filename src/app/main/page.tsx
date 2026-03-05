@@ -4,10 +4,8 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
-
 import MainSwiper from "@/app/main/_components/MainSwiper";
-import { MAIN_TABS } from "@/app/main/_components/MainTopBar";
-import { useMainTab, type MainTab } from "@/contexts/MainTabContext";
+import { useMainTabStore, MAIN_TABS, type MainTab } from "@/stores/useMainTabStore";
 import BestTab from "@/app/main/_components/BestTab";
 import NewTab from "@/app/main/_components/NewTab";
 import RecommendTab from "@/app/main/_components/RecommendTab";
@@ -25,7 +23,8 @@ const TAB_COMPONENTS: Record<MainTab, ReactNode> = {
 };
 
 export default function MainPage() {
-  const { activeTab, setActiveTab } = useMainTab();
+  const activeTab = useMainTabStore((s) => s.activeTab);
+  const setActiveTab = useMainTabStore((s) => s.setActiveTab);
   const swiperRef = useRef<SwiperType | null>(null);
 
   // 탭 변경 시 해당 인덱스로 스와이프

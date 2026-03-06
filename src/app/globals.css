@@ -52,10 +52,6 @@ body {
   }
 }
 
-.animate-in {
-  animation: fadeIn 0.2s ease-out;
-}
-
 .fade-in {
   animation: fadeIn 0.3s ease-out;
 }

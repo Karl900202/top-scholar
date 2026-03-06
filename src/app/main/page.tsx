@@ -22,6 +22,8 @@ const TAB_COMPONENTS: Record<MainTab, ReactNode> = {
   마감임박: <ClosingSoonTab />,
 };
 
+const MAIN_SWIPER_VISIBLE_TABS = new Set<MainTab>(["추천", "인기"]);
+
 export default function MainPage() {
   const activeTab = useMainTabStore((s) => s.activeTab);
   const setActiveTab = useMainTabStore((s) => s.setActiveTab);
@@ -53,7 +55,6 @@ export default function MainPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white pt-24">
-      
       <div className="w-full overflow-hidden">
         <Swiper
           onSwiper={handleSwiperInit}
@@ -65,7 +66,7 @@ export default function MainPage() {
         >
           {MAIN_TABS.map((tab) => (
             <SwiperSlide key={tab} className="!w-full">
-              {(tab === "추천" || tab === "인기") && <MainSwiper />}
+              {MAIN_SWIPER_VISIBLE_TABS.has(tab) && <MainSwiper />}
               <div className="min-h-[40vh]">
                 {TAB_COMPONENTS[tab]}
               </div>
